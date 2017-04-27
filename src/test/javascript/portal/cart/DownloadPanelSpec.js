@@ -218,12 +218,13 @@ describe("Portal.cart.DownloadPanel", function() {
             var callbackScope = downloadPanel;
             var callback = noOp;
             var testKey = "downloadAsCsvLabel";
+            var downloadOptions = [];
             $.fileDownload = noOp;
 
             spyOn(downloadPanel.confirmationWindow, 'show');
             spyOn(window, 'trackUsage');
 
-            downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
+            downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey, downloadOptions);
             testParams.onAccept(testParams);
             expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.getTitle(), null);
         });

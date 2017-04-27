@@ -223,7 +223,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             title: handler.onlineResource.title,
             text: OpenLayers.i18n(downloadOption.textKey),
             handler: function() {
-                this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams, downloadOption.textKey);
+                this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams, downloadOption.textKey, downloadOption);
             },
             scope: this
         }
@@ -285,7 +285,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         return (regexRes && regexRes[1].length > 0) ? regexRes[1].toTitleCase() : false;
     },
 
-    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params, textKey) {
+    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params, textKey, downloadOption) {
 
         var self = this;
 
@@ -301,6 +301,11 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             );
         };
 
+        if (downloadOption.downloadSizeHandler) {
+            params.onLoadConfirmationWindow = function(callbackParams) {
+                    self.confirmationWindow.downloadCalculatorPanel.getContent(downloadOption.downloadSizeHandler(collection, callbackParams));
+            };
+        }
         this.confirmationWindow.show(params);
     },
 
